@@ -2,13 +2,13 @@ launch is a fast, productive and easy-to-use launcher for android
 
 features
 --------
-  - launch apps instantly: as instant as your typing allows you to be
+  - launch apps instantly: as fast as your typing allows you to be
   - easy on eyes
   - no icons, distractions, clutter/bloat, etc
-  - fast and efficient
+  - lightweight and efficient
   - not just visual minimalism like most other minimalist launchers,
     but technical minimalism too.
-  - free and open-source
+  - open-source
   - uses at least ~10x less space than even the *minimalist* launchers
 
 functions
@@ -33,8 +33,8 @@ how does it work
 
 goals
 -----
-  - launch aims for the following goals
-    - maximum compatibility (supports android >=3.1)
+  - launch aims for the following:
+    - maximum compatibility (supports android >=4.0)
     - less is more
     - ethical correctness (no ads/trackers)
-    - stick to UNIX philosophy
+    - stick to the UNIX philosophy
