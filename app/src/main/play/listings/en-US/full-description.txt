@@ -1,0 +1,40 @@
+launch is a fast, productive and easy-to-use launcher for android
+
+features
+--------
+  - launch apps instantly: as instant as your typing allows you to be
+  - easy on eyes
+  - no icons, distractions, clutter/bloat, etc
+  - fast and efficient
+  - not just visual minimalism like most other minimalist launchers,
+    but technical minimalism too.
+  - free and open-source
+  - uses at least ~10x less space than even the *minimalist* launchers
+
+functions
+---------
+  - use search keys to create a filter word which shows only the filtered apps
+  - click on an app to launch it
+  - long press on an app to launch it's system settings
+  - press back button to clear the last character of the search word
+  - long press on the back button to refresh the app list (to reflect
+    deletion/addition of apps)
+
+how does it work
+----------------
+  - keys on the left and right side are for searching, and the middle section
+    shows the apps installed
+  - start searching by using the search keys
+  - if the search word only has one final matching app in the list, it will
+    be opened automatically
+  - to quickly launch an app, find a unique combination of alphabets
+    which can launch it. for example, if "K-9 Mail" is the only app which has
+    a "9" in it, then it can be launched just by pressing the "9" key
+
+goals
+-----
+  - launch aims for the following goals
+    - maximum compatibility (supports android >=3.1)
+    - less is more
+    - ethical correctness (no ads/trackers)
+    - stick to UNIX philosophy
