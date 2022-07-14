@@ -14,7 +14,10 @@
             android:id="@+id/lftSrchLstVw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:fastScrollEnabled="true"
+            android:divider="null"
+            android:scrollbars="none"/>
     </RelativeLayout>
     <LinearLayout
         android:id="@+id/mainLnrLyt"
@@ -22,10 +25,22 @@
         android:layout_height="wrap_content"
         android:layout_weight="7"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvEmptyLst"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No apps found"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#ff3737"/>
         <ListView
             android:id="@+id/apLst"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fastScrollEnabled="true"
+            android:scrollbars="none"
             android:divider="@null"/>
     </LinearLayout>
     <RelativeLayout
@@ -36,6 +51,9 @@
             android:id="@+id/rgtSrchLstVw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:fastScrollEnabled="true"
+            android:divider="null"
+            android:scrollbars="none"/>
     </RelativeLayout>
 </LinearLayout>

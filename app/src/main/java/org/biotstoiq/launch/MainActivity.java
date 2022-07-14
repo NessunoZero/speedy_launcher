@@ -9,8 +9,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,13 +20,14 @@ import java.util.List;
 
 public class MainActivity extends Activity {
 
+    TextView tvEmptyLst;
     ListView lftSrchLstVw;
     ListView apLst;
     ListView rgtSrchLstVw;
 
-    final String[] lftSrchArr = new String[]{"a", "b", "c", "d", "e", "f", "g", "h", "i",
+    final static String[] lftSrchArr = new String[]{"a", "b", "c", "d", "e", "f", "g", "h", "i",
             "j", "k", "l", "m", "0", "1", "2", "3", "4"};
-    final String[] rgtSrchArr = new String[]{"n", "o", "p", "q", "r", "s", "t", "u", "v",
+    final static String[] rgtSrchArr = new String[]{"n", "o", "p", "q", "r", "s", "t", "u", "v",
             "w", "x", "y", "z", "5", "6", "7", "8", "9"};
 
     private ArrayList<String> pkgNmsArlst;
@@ -34,7 +37,7 @@ public class MainActivity extends Activity {
     private List<ResolveInfo> pkgLst;
 
     /* the global search string */
-    String srchStr = "";
+    static String srchStr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         /* Get UI Elements */
+        tvEmptyLst = findViewById(R.id.tvEmptyLst);
         lftSrchLstVw = findViewById(R.id.lftSrchLstVw);
         apLst = findViewById(R.id.apLst);
         rgtSrchLstVw = findViewById(R.id.rgtSrchLstVw);
@@ -69,6 +73,7 @@ public class MainActivity extends Activity {
 
         /* update the search string and call the filter function */
         lftSrchLstVw.setOnItemClickListener((adapterView, view, i, l) -> {
+            if (apLst.getCount() < 2) return;
             srchStr = srchStr.concat(adapterView.getItemAtPosition(i).toString());
             fltrAppLst();
         });
@@ -90,6 +95,7 @@ public class MainActivity extends Activity {
 
         /* update the search string and call the filter function */
         rgtSrchLstVw.setOnItemClickListener((adapterView, view, i, l) -> {
+            if (apLst.getCount() < 2) return;
             srchStr = srchStr.concat(adapterView.getItemAtPosition(i).toString());
             fltrAppLst();
         });
@@ -104,12 +110,14 @@ public class MainActivity extends Activity {
 
         /* sort the app list */
         Collections.sort(pkgLst, new ResolveInfo.DisplayNameComparator(pkgMngr));
+
     }
 
     void ftchAlAps() {
 
         gtApLst();
 
+        /* clear the list before repopulating */
         apAdr.clear();
         pkgNmsArlst.clear();
 
@@ -118,6 +126,13 @@ public class MainActivity extends Activity {
             String apNm = resolver.loadLabel(pkgMngr).toString();
             apAdr.add(apNm);
             pkgNmsArlst.add(resolver.activityInfo.packageName);
+        }
+
+        if(apAdr.getCount() < 1) {
+            tvEmptyLst.setVisibility(View.VISIBLE);
+            return;
+        } else {
+            tvEmptyLst.setVisibility(View.GONE);
         }
 
         shwAps();
@@ -143,12 +158,17 @@ public class MainActivity extends Activity {
                 pkgNmsArlst.add(resolver.activityInfo.packageName);
             }
         }
-        shwAps();
 
         /* if only one app contains the search string, then launch it */
         if (apAdr.getCount() == 1) {
             startActivity(pkgMngr.getLaunchIntentForPackage(pkgNmsArlst.get(0)));
+        } else if (apAdr.getCount() < 1) {
+            tvEmptyLst.setVisibility(View.VISIBLE);
+        } else {
+            shwAps();
+            tvEmptyLst.setVisibility(View.GONE);
         }
+
     }
 
     /* show the app name adapter as the app list */
