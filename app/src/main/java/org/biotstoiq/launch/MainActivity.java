@@ -22,12 +22,16 @@ public class MainActivity extends Activity {
 
     TextView tvEmptyLst;
     ListView lftSrchLstVw;
+    ListView lftIISrchLstVw;
     ListView apLst;
     ListView rgtSrchLstVw;
+    ListView rgtIISrchLstVw;
 
-    final static String[] lftSrchArr = new String[]{"0", "1", "2", "3", "4", "a", "b", "c", "d", "e", "f", "g", "h", "i",
+    final static String[] lftSrchArr = new String[]{"a", "b", "c", "d", "e", "f", "g", "h", "i",
             "j", "k", "l", "m"};
-    final static String[] rgtSrchArr = new String[]{"5", "6", "7", "8", "9", "n", "o", "p", "q", "r", "s", "t", "u", "v",
+    final static String[] lftIISrchArr = new String[]{"-", "_", "0", "1", "2", "3", "4"};
+    final static String[] rgtSrchArr = new String[]{".", "!", "5", "6", "7", "8", "9"};
+    final static String[] rgtIISrchArr = new String[]{"n", "o", "p", "q", "r", "s", "t", "u", "v",
             "w", "x", "y", "z"};
 
     private ArrayList<String> pkgNmsArlst;
@@ -47,8 +51,10 @@ public class MainActivity extends Activity {
         /* Get UI Elements */
         tvEmptyLst = findViewById(R.id.tvEmptyLst);
         lftSrchLstVw = findViewById(R.id.lftSrchLstVw);
+        lftIISrchLstVw = findViewById(R.id.lftIISrchLstVw);
         apLst = findViewById(R.id.apLst);
         rgtSrchLstVw = findViewById(R.id.rgtSrchLstVw);
+        rgtIISrchLstVw = findViewById(R.id.rgtIISrchLstVw);
 
         /* get the system package manager */
         pkgMngr = getPackageManager();
@@ -63,16 +69,27 @@ public class MainActivity extends Activity {
         /* left search textview list */
         ArrayAdapter<String> lftSrchAdptr = new ArrayAdapter<>(this,
                 R.layout.activity_srch_lstvw, R.id.srchTxtVw, lftSrchArr);
+        ArrayAdapter<String> lftIISrchAdptr = new ArrayAdapter<>(this,
+                R.layout.activity_srch_lstvw, R.id.srchTxtVw, lftIISrchArr);
 
         /* right search textview list */
         ArrayAdapter<String> rgtSrchAdptr = new ArrayAdapter<>(this,
                 R.layout.activity_srch_lstvw, R.id.srchTxtVw, rgtSrchArr);
+        ArrayAdapter<String> rgtIISrchAdptr = new ArrayAdapter<>(this,
+                R.layout.activity_srch_lstvw, R.id.srchTxtVw, rgtIISrchArr);
 
         lftSrchLstVw.setAdapter(lftSrchAdptr);
+        lftIISrchLstVw.setAdapter(lftIISrchAdptr);
         rgtSrchLstVw.setAdapter(rgtSrchAdptr);
+        rgtIISrchLstVw.setAdapter(rgtIISrchAdptr);
 
         /* update the search string and call the filter function */
         lftSrchLstVw.setOnItemClickListener((adapterView, view, i, l) -> {
+            if (apLst.getCount() < 2) return;
+            srchStr = srchStr.concat(adapterView.getItemAtPosition(i).toString());
+            fltrAppLst();
+        });
+        lftIISrchLstVw.setOnItemClickListener((adapterView, view, i, l) -> {
             if (apLst.getCount() < 2) return;
             srchStr = srchStr.concat(adapterView.getItemAtPosition(i).toString());
             fltrAppLst();
@@ -95,6 +112,11 @@ public class MainActivity extends Activity {
 
         /* update the search string and call the filter function */
         rgtSrchLstVw.setOnItemClickListener((adapterView, view, i, l) -> {
+            if (apLst.getCount() < 2) return;
+            srchStr = srchStr.concat(adapterView.getItemAtPosition(i).toString());
+            fltrAppLst();
+        });
+        rgtIISrchLstVw.setOnItemClickListener((adapterView, view, i, l) -> {
             if (apLst.getCount() < 2) return;
             srchStr = srchStr.concat(adapterView.getItemAtPosition(i).toString());
             fltrAppLst();

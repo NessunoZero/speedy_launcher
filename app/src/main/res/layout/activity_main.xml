@@ -9,8 +9,17 @@
     <ListView
         android:id="@+id/lftSrchLstVw"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.5"
+        android:layout_height="match_parent"
+        android:layout_weight="1.25"
+        android:divider="@null"
+        android:scrollbars="none"
+        android:transcriptMode="alwaysScroll"
+        android:stackFromBottom="true"/>
+    <ListView
+        android:id="@+id/lftIISrchLstVw"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.25"
         android:divider="@null"
         android:scrollbars="none"
         android:transcriptMode="alwaysScroll"
@@ -19,7 +28,7 @@
         android:id="@+id/mainLnrLyt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="7"
+        android:layout_weight="5"
         android:orientation="vertical">
         <TextView
             android:id="@+id/tvEmptyLst"
@@ -42,7 +51,16 @@
         android:id="@+id/rgtSrchLstVw"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1.5"
+        android:layout_weight="1.25"
+        android:divider="@null"
+        android:scrollbars="none"
+        android:transcriptMode="alwaysScroll"
+        android:stackFromBottom="true"/>
+    <ListView
+        android:id="@+id/rgtIISrchLstVw"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.25"
         android:divider="@null"
         android:scrollbars="none"
         android:transcriptMode="alwaysScroll"
