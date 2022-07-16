@@ -25,10 +25,10 @@ public class MainActivity extends Activity {
     ListView apLst;
     ListView rgtSrchLstVw;
 
-    final static String[] lftSrchArr = new String[]{"a", "b", "c", "d", "e", "f", "g", "h", "i",
-            "j", "k", "l", "m", "0", "1", "2", "3", "4"};
-    final static String[] rgtSrchArr = new String[]{"n", "o", "p", "q", "r", "s", "t", "u", "v",
-            "w", "x", "y", "z", "5", "6", "7", "8", "9"};
+    final static String[] lftSrchArr = new String[]{"0", "1", "2", "3", "4", "a", "b", "c", "d", "e", "f", "g", "h", "i",
+            "j", "k", "l", "m"};
+    final static String[] rgtSrchArr = new String[]{"5", "6", "7", "8", "9", "n", "o", "p", "q", "r", "s", "t", "u", "v",
+            "w", "x", "y", "z"};
 
     private ArrayList<String> pkgNmsArlst;
     private ArrayAdapter<String> apAdr;
