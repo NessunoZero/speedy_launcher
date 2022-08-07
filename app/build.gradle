@@ -7,10 +7,10 @@ android {
 
     defaultConfig {
         applicationId "org.biotstoiq.launch"
-        minSdk 9
+        minSdk 21
         targetSdk 31
-        versionCode 5
-        versionName "0.904"
+        versionCode 7
+        versionName "0.906"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
