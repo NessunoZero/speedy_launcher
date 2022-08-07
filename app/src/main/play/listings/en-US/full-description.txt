@@ -2,7 +2,9 @@ launch is a fast, productive and easy-to-use launcher for android
 
 features
 --------
-  - launch apps instantly: as fast as your typing allows you to be
+  - launch apps instantly with patterns: as fast as your typing allows you to
+    be
+  - assign long-press shortcuts to quickly access apps.
   - easy on eyes
   - no icons, distractions, clutter/bloat, etc
   - lightweight and efficient
@@ -15,10 +17,11 @@ functions
 ---------
   - use search keys to create a filter word which shows only the filtered apps
   - click on an app to launch it
-  - long press on an app to launch it's system settings
+  - long-press on an app to launch it's system settings
   - press back button to clear the last character of the search word
-  - long press on the back button to refresh the app list (to reflect
+  - long-press on the back button to refresh the app list (to reflect
     deletion/addition of apps)
+  - long-press on a search key to launch/assign a shortcut app.
 
 how does it work
 ----------------
@@ -29,12 +32,16 @@ how does it work
     be opened automatically
   - to quickly launch an app, find a unique combination of alphabets
     which can launch it. for example, if "K-9 Mail" is the only app which has
-    a "9" in it, then it can be launched just by pressing the "9" key
+    a "9" in it in my app list, then it can be launched just by pressing
+    the "9" search key
+  - assign an app to a search key by long-pressing on the search key. this
+    assignment can be removed and/or modified.
 
 goals
 -----
   - launch aims for the following:
-    - maximum compatibility (supports android >=4.0)
-    - less is more
+    - maximum compatibility (supports android >=5.0)
+    - do more with less
     - ethical correctness (no ads/trackers)
-    - stick to the UNIX philosophy
+    - stick to the UNIX philosophy (do one thing and do it well)
+

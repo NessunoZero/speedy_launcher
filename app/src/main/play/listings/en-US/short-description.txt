@@ -1,1 +1,1 @@
-launch is a fast, productive and easy-to-use launcher for android
+fast, productive and easy-to-use launcher for android
