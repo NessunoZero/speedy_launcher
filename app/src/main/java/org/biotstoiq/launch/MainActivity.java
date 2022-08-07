@@ -192,9 +192,7 @@ public class MainActivity extends Activity {
     void lnchOrRmvApDlg (String key, String apNm, String pkgNm) {
         alrtDlgBldr = new AlertDialog.Builder(this);
         alrtDlgBldr.setTitle(apNm);
-        alrtDlgBldr.setPositiveButton(R.string.go, (dialogInterface, i1) -> {
-            lnch(pkgNm);
-        });
+        alrtDlgBldr.setPositiveButton(R.string.go, (dialogInterface, i1) -> lnch(pkgNm));
         alrtDlgBldr.setNegativeButton(R.string.rmv, (dialogInterface, i1) -> {
             prfEdtr.putString(key,"");
             prfEdtr.apply();
@@ -306,6 +304,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        updtApplst();
         ftchAlAps();
     }
 }
