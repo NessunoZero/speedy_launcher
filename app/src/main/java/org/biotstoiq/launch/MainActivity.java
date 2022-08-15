@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
     TextView tvEmptyLst;
     ListView lftSrchLstVw;
     ListView lftIISrchLstVw;
-    ListView apLst;
+    ListView apLstVw;
     ListView rgtSrchLstVw;
     ListView rgtIISrchLstVw;
 
@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
         tvEmptyLst = findViewById(R.id.tvEmptyLst);
         lftSrchLstVw = findViewById(R.id.lftSrchLstVw);
         lftIISrchLstVw = findViewById(R.id.lftIISrchLstVw);
-        apLst = findViewById(R.id.apLst);
+        apLstVw = findViewById(R.id.apLst);
         rgtSrchLstVw = findViewById(R.id.rgtSrchLstVw);
         rgtIISrchLstVw = findViewById(R.id.rgtIISrchLstVw);
         alrtDlgBldr = new AlertDialog.Builder(this);
@@ -102,21 +102,21 @@ public class MainActivity extends Activity {
 
         /* update the search string and call the filter function */
         lftSrchLstVw.setOnItemClickListener((adapterView, view, i, l) -> {
-            if (apLst.getCount() < 2) return;
+            if (apLstVw.getCount() < 2) return;
             srchStr = srchStr.concat((String) adapterView.getItemAtPosition(i));
             fltrAppLst();
         });
         lftIISrchLstVw.setOnItemClickListener((adapterView, view, i, l) -> {
-            if (apLst.getCount() < 2) return;
+            if (apLstVw.getCount() < 2) return;
             srchStr = srchStr.concat((String) adapterView.getItemAtPosition(i));
             fltrAppLst();
         });
 
         /* launch the app */
-        apLst.setOnItemClickListener((adapterView, view, i, l) -> lnch(pkgNmsArlst.get(i)));
+        apLstVw.setOnItemClickListener((adapterView, view, i, l) -> lnch(pkgNmsArlst.get(i)));
 
         /* try to open the app's settings */
-        apLst.setOnItemLongClickListener((adapterView, view, i, l) -> {
+        apLstVw.setOnItemLongClickListener((adapterView, view, i, l) -> {
             try {
                 Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 intent.setData(Uri.parse("package:" + pkgNmsArlst.get(i)));
@@ -129,12 +129,12 @@ public class MainActivity extends Activity {
 
         /* update the search string and call the filter function */
         rgtSrchLstVw.setOnItemClickListener((adapterView, view, i, l) -> {
-            if (apLst.getCount() < 2) return;
+            if (apLstVw.getCount() < 2) return;
             srchStr = srchStr.concat((String) adapterView.getItemAtPosition(i));
             fltrAppLst();
         });
         rgtIISrchLstVw.setOnItemClickListener((adapterView, view, i, l) -> {
-            if (apLst.getCount() < 2) return;
+            if (apLstVw.getCount() < 2) return;
             srchStr = srchStr.concat((String) adapterView.getItemAtPosition(i));
             fltrAppLst();
         });
@@ -182,7 +182,7 @@ public class MainActivity extends Activity {
     void chsLngPrsApDlg (String key) {
         alrtDlgBldr = new AlertDialog.Builder(this);
         alrtDlgBldr.setView(R.layout.main_listview);
-        alrtDlgBldr.setAdapter(apLst.getAdapter(), (dialogInterface, i1) -> {
+        alrtDlgBldr.setAdapter(apLstVw.getAdapter(), (dialogInterface, i1) -> {
             prfEdtr.putString(key, pkgNmsArlst.get(i1));
             prfEdtr.apply();
         });
@@ -279,7 +279,9 @@ public class MainActivity extends Activity {
 
     /* show the app name adapter as the app list */
     void shwAps() {
-        apLst.setAdapter(apAdr);
+        apLstVw.setAdapter(apAdr);
+
+        apLstVw.setSelection(0);
     }
 
     @Override
