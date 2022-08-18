@@ -2,5 +2,9 @@
     <string name="app_name">launch</string>
     <string name="apNtFnd">No Apps Found. Press back button.</string>
     <string name="go">GO</string>
-    <string name="rmv">REMVOVE</string>
+    <string name="rmv">REMOVE</string>
+    <string name="k">K</string>
+    <string name="u">U</string>
+    <string name="s">S</string>
+    <string name="d">D</string>
 </resources>
