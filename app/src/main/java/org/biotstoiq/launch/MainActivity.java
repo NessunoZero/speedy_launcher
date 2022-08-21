@@ -3,7 +3,6 @@ package org.biotstoiq.launch;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -12,11 +11,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -37,7 +38,8 @@ public class MainActivity extends Activity {
     ListView rgtSrchLstVw;
     ListView rgtIISrchLstVw;
 
-    Button kbdBtn;
+    EditText srchKeyET;
+
     Button upBtn;
     Button downBtn;
 
@@ -73,7 +75,7 @@ public class MainActivity extends Activity {
         apLstVw = findViewById(R.id.apLstVw);
         rgtSrchLstVw = findViewById(R.id.rgtSrchLstVw);
         rgtIISrchLstVw = findViewById(R.id.rgtIISrchLstVw);
-        kbdBtn = findViewById(R.id.kbdBtn);
+        srchKeyET = findViewById(R.id.srchKeyET);
         upBtn = findViewById(R.id.upBtn);
         downBtn = findViewById(R.id.downBtn);
 
@@ -171,25 +173,34 @@ public class MainActivity extends Activity {
         /* move to the top of the list */
         upBtn.setOnClickListener(view -> apLstVw.setSelection(0));
 
-        /* bring up the keyboard */
-        kbdBtn.setOnClickListener((view -> {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInputFromWindow(view.getWindowToken(), InputMethodManager.SHOW_FORCED, 0);
-        }));
-
         /* move to the bottom of the list */
         downBtn.setOnClickListener(view -> apLstVw.setSelection(apAdr.getCount()-1));
 
+        srchKeyET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                setKey(String.valueOf(charSequence).toLowerCase());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
         if (!prfs.getBoolean("hlp_shwn", false)) {
             shwHlp();
+            prfEdtr.putBoolean("hlp_shwn", true);
+            prfEdtr.apply();
         }
     }
 
     void shwHlp () {
         alrtDlgBldr.setMessage(R.string.hlp);
         alrtDlgBldr.setPositiveButton(R.string.go, (dialogInterface, i) -> {
-            prfEdtr.putBoolean("hlp_shwn", true);
-            prfEdtr.apply();
         });
         alrtDlgBldr.create().show();
     }
@@ -206,22 +217,15 @@ public class MainActivity extends Activity {
         }
     }
 
-    @Override
-    public boolean onKeyUp (int keyCode, KeyEvent ke) {
-        if (keyCode != KeyEvent.KEYCODE_BACK && keyCode != KeyEvent.KEYCODE_DEL
-                && keyCode != KeyEvent.KEYCODE_ENTER) {
-            if (apLstVw.getCount() < 2) return false;
-            appendKey(String.valueOf((char)ke.getUnicodeChar()));
-        } else {
-            /* on back press, remove the last character of the string and filter app list */
-            clrKey();
-        }
-        return true;
+    void setKey (String s) {
+        srchStr = s;
+        fltrAppLst();
     }
 
     void appendKey (String s) {
         srchStr = srchStr.concat(s);
         fltrAppLst();
+        srchKeyET.setText(srchStr);
     }
 
     void clrKey () {
@@ -229,6 +233,7 @@ public class MainActivity extends Activity {
         if (strLen <= 0)  return;
         srchStr = srchStr.substring(0, strLen - 1);
         fltrAppLst();
+        srchKeyET.setText(srchStr);
     }
 
     void bldLngPrsFlow (String key) {
@@ -295,14 +300,13 @@ public class MainActivity extends Activity {
         pkgNmsArlst.clear();
     }
 
-    void clrKeys() {
-        /* clear the global search string */
-        srchStr = "";
-    }
-
     void ftchAlAps () {
 
-        clrKeys();
+        /* clear the global search string */
+        srchStr = "";
+
+        srchKeyET.getText().clear();
+
         /* clear the list before repopulating */
         clrLsts();
 
@@ -351,6 +355,12 @@ public class MainActivity extends Activity {
     void shwAps () {
         apLstVw.setAdapter(apAdr);
         apLstVw.setSelection(0);
+    }
+
+    @Override
+    public void onBackPressed() {
+        clrKey();
+        srchKeyET.clearFocus();
     }
 
     @Override

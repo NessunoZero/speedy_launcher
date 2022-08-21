@@ -83,13 +83,16 @@
             android:layout_weight="2"
             android:text="@string/top"
             style="?android:attr/buttonBarButtonStyle" />
-        <Button
-            android:id="@+id/kbdBtn"
-            android:layout_width="0dp"
+        <EditText
+            android:id="@+id/srchKeyET"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:text="@string/kbd"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:paddingStart="8sp"
+            android:gravity="center"
+            android:paddingEnd="8sp"
+            android:hint="@string/key"
+            android:inputType="text"
+            android:cursorVisible="false"/>
         <Button
             android:id="@+id/downBtn"
             android:layout_width="0dp"
