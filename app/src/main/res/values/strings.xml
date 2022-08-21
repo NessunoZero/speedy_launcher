@@ -3,8 +3,10 @@
     <string name="apNtFnd">No Apps Found. Press back button.</string>
     <string name="go">GO</string>
     <string name="rmv">REMOVE</string>
-    <string name="k">K</string>
-    <string name="u">U</string>
-    <string name="s">S</string>
-    <string name="d">D</string>
+
+    <string name="kbd">KBD</string>
+    <string name="top">TOP</string>
+    <string name="btm">BTM</string>
+
+    <string name="hlp"><b>Long press</b> on an <b>app</b> to open its system settings.\n\n<b>Short press</b> on a <b>search key</b> to filter apps.\n\n<b>Long press</b> on a <b>search key</b> to assign or remove shortcuts.\n\nUse the <b>KBD</b> button to bring up the keyboard.\n\nUse <b>TOP</b> and <b>BTM</b> to move to the top and bottom respectively.</string>
 </resources>
