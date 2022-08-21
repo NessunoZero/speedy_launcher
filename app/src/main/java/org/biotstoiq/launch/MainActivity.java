@@ -3,6 +3,7 @@ package org.biotstoiq.launch;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -13,11 +14,14 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,6 +36,10 @@ public class MainActivity extends Activity {
     ListView apLstVw;
     ListView rgtSrchLstVw;
     ListView rgtIISrchLstVw;
+
+    Button kbdBtn;
+    Button upBtn;
+    Button downBtn;
 
     AlertDialog.Builder alrtDlgBldr;
 
@@ -52,18 +60,23 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        setTheme();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        getWindow().setNavigationBarColor(0xff303030);
 
         /* Get UI Elements */
         tvEmptyLst = findViewById(R.id.tvEmptyLst);
         lftSrchLstVw = findViewById(R.id.lftSrchLstVw);
         lftIISrchLstVw = findViewById(R.id.lftIISrchLstVw);
-        apLstVw = findViewById(R.id.apLst);
+        apLstVw = findViewById(R.id.apLstVw);
         rgtSrchLstVw = findViewById(R.id.rgtSrchLstVw);
         rgtIISrchLstVw = findViewById(R.id.rgtIISrchLstVw);
+        kbdBtn = findViewById(R.id.kbdBtn);
+        upBtn = findViewById(R.id.upBtn);
+        downBtn = findViewById(R.id.downBtn);
+
         alrtDlgBldr = new AlertDialog.Builder(this);
 
         /* get the system package manager */
@@ -96,20 +109,14 @@ public class MainActivity extends Activity {
         /* get all the package names into the list */
         updtApplst();
 
-        /* get all preferences */
-        prfs  = PreferenceManager.getDefaultSharedPreferences(this);
-        prfEdtr = prfs.edit();
-
         /* update the search string and call the filter function */
         lftSrchLstVw.setOnItemClickListener((adapterView, view, i, l) -> {
             if (apLstVw.getCount() < 2) return;
-            srchStr = srchStr.concat((String) adapterView.getItemAtPosition(i));
-            fltrAppLst();
+            appendKey((String) adapterView.getItemAtPosition(i));
         });
         lftIISrchLstVw.setOnItemClickListener((adapterView, view, i, l) -> {
             if (apLstVw.getCount() < 2) return;
-            srchStr = srchStr.concat((String) adapterView.getItemAtPosition(i));
-            fltrAppLst();
+            appendKey((String) adapterView.getItemAtPosition(i));
         });
 
         /* launch the app */
@@ -130,38 +137,98 @@ public class MainActivity extends Activity {
         /* update the search string and call the filter function */
         rgtSrchLstVw.setOnItemClickListener((adapterView, view, i, l) -> {
             if (apLstVw.getCount() < 2) return;
-            srchStr = srchStr.concat((String) adapterView.getItemAtPosition(i));
-            fltrAppLst();
+            appendKey((String) adapterView.getItemAtPosition(i));
         });
         rgtIISrchLstVw.setOnItemClickListener((adapterView, view, i, l) -> {
             if (apLstVw.getCount() < 2) return;
-            srchStr = srchStr.concat((String) adapterView.getItemAtPosition(i));
-            fltrAppLst();
+            appendKey((String) adapterView.getItemAtPosition(i));
         });
 
+        /* get all preferences */
+        prfs  = PreferenceManager.getDefaultSharedPreferences(this);
+        prfEdtr = prfs.edit();
+
         lftSrchLstVw.setOnItemLongClickListener((adapterView, view, i, l) -> {
-            String key = (String) adapterView.getItemAtPosition(i);
-            bldLngPrsFlow(key);
+            bldLngPrsFlow((String) adapterView.getItemAtPosition(i));
             return true;
         });
 
         lftIISrchLstVw.setOnItemLongClickListener((adapterView, view, i, l) -> {
-            String key = (String) adapterView.getItemAtPosition(i);
-            bldLngPrsFlow(key);
+            bldLngPrsFlow((String) adapterView.getItemAtPosition(i));
             return true;
         });
 
         rgtSrchLstVw.setOnItemLongClickListener((adapterView, view, i, l) -> {
-            String key = (String) adapterView.getItemAtPosition(i);
-            bldLngPrsFlow(key);
+            bldLngPrsFlow((String) adapterView.getItemAtPosition(i));
             return true;
         });
 
         rgtIISrchLstVw.setOnItemLongClickListener((adapterView, view, i, l) -> {
-            String key = (String) adapterView.getItemAtPosition(i);
-            bldLngPrsFlow(key);
+            bldLngPrsFlow((String) adapterView.getItemAtPosition(i));
             return true;
         });
+
+        /* move to the top of the list */
+        upBtn.setOnClickListener(view -> apLstVw.setSelection(0));
+
+        /* bring up the keyboard */
+        kbdBtn.setOnClickListener((view -> {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInputFromWindow(view.getWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+        }));
+
+        /* move to the bottom of the list */
+        downBtn.setOnClickListener(view -> apLstVw.setSelection(apAdr.getCount()-1));
+
+        if (!prfs.getBoolean("hlp_shwn", false)) {
+            shwHlp();
+        }
+    }
+
+    void shwHlp () {
+        alrtDlgBldr.setMessage(R.string.hlp);
+        alrtDlgBldr.setPositiveButton(R.string.go, (dialogInterface, i) -> {
+            prfEdtr.putBoolean("hlp_shwn", true);
+            prfEdtr.apply();
+        });
+        alrtDlgBldr.create().show();
+    }
+
+    void setTheme () {
+        /* set the theme according to the time of the day */
+        if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) > 6 &&
+                Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 18) {
+            setTheme(android.R.style.Theme_Material_Light_NoActionBar);
+            getWindow().setNavigationBarColor(0xffffffff);
+        } else {
+            setTheme(android.R.style.Theme_Material_NoActionBar);
+            getWindow().setNavigationBarColor(0xff303030);
+        }
+    }
+
+    @Override
+    public boolean onKeyUp (int keyCode, KeyEvent ke) {
+        if (keyCode != KeyEvent.KEYCODE_BACK && keyCode != KeyEvent.KEYCODE_DEL
+                && keyCode != KeyEvent.KEYCODE_ENTER) {
+            if (apLstVw.getCount() < 2) return false;
+            appendKey(String.valueOf((char)ke.getUnicodeChar()));
+        } else {
+            /* on back press, remove the last character of the string and filter app list */
+            clrKey();
+        }
+        return true;
+    }
+
+    void appendKey (String s) {
+        srchStr = srchStr.concat(s);
+        fltrAppLst();
+    }
+
+    void clrKey () {
+        int strLen = srchStr.length();
+        if (strLen <= 0)  return;
+        srchStr = srchStr.substring(0, strLen - 1);
+        fltrAppLst();
     }
 
     void bldLngPrsFlow (String key) {
@@ -213,7 +280,7 @@ public class MainActivity extends Activity {
         startActivity(pkgMngr.getLaunchIntentForPackage(nm));
     }
 
-    void updtApplst() {
+    void updtApplst () {
         srchStr = "";
         /* fetch all the installed apps */
         pkgLst = pkgMngr.queryIntentActivities(
@@ -223,16 +290,19 @@ public class MainActivity extends Activity {
         Collections.sort(pkgLst, new ResolveInfo.DisplayNameComparator(pkgMngr));
     }
 
-    void clrLsts() {
+    void clrLsts () {
         apAdr.clear();
         pkgNmsArlst.clear();
     }
 
-    void ftchAlAps() {
-
+    void clrKeys() {
         /* clear the global search string */
         srchStr = "";
+    }
 
+    void ftchAlAps () {
+
+        clrKeys();
         /* clear the list before repopulating */
         clrLsts();
 
@@ -252,7 +322,7 @@ public class MainActivity extends Activity {
         shwAps();
     }
 
-    void fltrAppLst() {
+    void fltrAppLst () {
 
         clrLsts();
 
@@ -278,23 +348,13 @@ public class MainActivity extends Activity {
     }
 
     /* show the app name adapter as the app list */
-    void shwAps() {
+    void shwAps () {
         apLstVw.setAdapter(apAdr);
-
         apLstVw.setSelection(0);
     }
 
     @Override
-    public void onBackPressed() {
-        /* on back press, remove the last character of the string and filter app list */
-        int strLen = srchStr.length();
-        if (strLen <= 0) return;
-        srchStr = srchStr.substring(0, strLen - 1);
-        fltrAppLst();
-    }
-
-    @Override
-    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+    public boolean onKeyLongPress (int keyCode, KeyEvent event) {
         /* if back key pressed for long, then refresh the app list */
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             updtApplst();
@@ -304,7 +364,7 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume () {
         super.onResume();
         updtApplst();
         ftchAlAps();
