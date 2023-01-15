@@ -6,34 +6,13 @@
     android:layout_margin="2dp"
     android:orientation="vertical"
     tools:context=".MainActivity">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-        <ListView
-            android:id="@+id/lftSrchLstVw"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.25"
-            android:divider="@null"
-            android:scrollbars="none"
-            android:stackFromBottom="true"/>
-        <ListView
-            android:id="@+id/lftIISrchLstVw"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.25"
-            android:divider="@null"
-            android:scrollbars="none"
-            android:stackFromBottom="true"/>
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="5"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/tvEmptyLst"
+                android:id="@+id/textViewEmptyList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/apNtFnd"
@@ -41,50 +20,41 @@
                 android:layout_gravity="center_horizontal"
                 android:textSize="22sp"/>
             <ListView
-                android:id="@+id/apLstVw"
+                android:id="@+id/appListView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scrollbars="none"
                 android:focusable="true"
                 android:divider="@null"
                 android:stackFromBottom="true"/>
-        </LinearLayout>
-        <ListView
-            android:id="@+id/rgtSrchLstVw"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.25"
-            android:divider="@null"
-            android:scrollbars="none"
-            android:stackFromBottom="true"/>
-        <ListView
-            android:id="@+id/rgtIISrchLstVw"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.25"
-            android:divider="@null"
-            android:scrollbars="none"
-            android:stackFromBottom="true"/>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#808080" />
+        android:background="@android:color/transparent"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <Button
-            android:id="@+id/upBtn"
+            android:id="@+id/leftBtn1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:text="@string/top"
+            android:text="@string/left1"
+            style="?android:attr/buttonBarButtonStyle" />
+        <Button
+            android:id="@+id/leftBtn2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:text="@string/left2"
             style="?android:attr/buttonBarButtonStyle" />
         <EditText
-            android:id="@+id/srchKeyET"
+            android:id="@+id/searchKeyEdit"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:paddingStart="8sp"
@@ -92,13 +62,22 @@
             android:paddingEnd="8sp"
             android:hint="@string/key"
             android:inputType="text"
-            android:cursorVisible="false"/>
+            android:cursorVisible="false"
+            android:autofillHints="name"
+            />
         <Button
-            android:id="@+id/downBtn"
+            android:id="@+id/rightBtn1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:text="@string/btm"
+            android:text="@string/right1"
+            style="?android:attr/buttonBarButtonStyle" />
+        <Button
+            android:id="@+id/rightBtn2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:text="@string/right2"
             style="?android:attr/buttonBarButtonStyle" />
     </LinearLayout>
 </LinearLayout>

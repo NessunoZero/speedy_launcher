@@ -3,16 +3,14 @@ plugins {
 }
 
 android {
-    compileSdk 31
-
+    namespace "org.n0.speedy_launch"
+    compileSdk 33
     defaultConfig {
-        applicationId "org.biotstoiq.launch"
-        minSdk 21
-        targetSdk 31
-        versionCode 9
-        versionName "0.908"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        applicationId "org.n0.speedy_launch"
+        minSdk 22
+        targetSdk 33
+        versionCode 10
+        versionName "1.0"
     }
 
     buildTypes {
@@ -20,6 +18,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            minifyEnabled = false
+            debuggable = false
+        }
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
