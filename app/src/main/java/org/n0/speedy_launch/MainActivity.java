@@ -10,7 +10,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends Activity {
 
@@ -45,6 +46,7 @@ public class MainActivity extends Activity {
     private ArrayAdapter<String> appAdapter;
     private List<ResolveInfo> packageList;
     private PackageManager packageManager;
+
 
     /* the global search string */
     private String searchString;
@@ -140,7 +142,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                setKey(String.valueOf(charSequence).toLowerCase());
+                setKey(String.valueOf(charSequence).toLowerCase(Locale.getDefault()));
             }
 
             @Override
@@ -199,12 +201,7 @@ public class MainActivity extends Activity {
     }
 
     String getAppNameFromPkgName (String pkgName) {
-        try {
-            return (String) packageManager.getApplicationLabel(packageManager.getApplicationInfo(pkgName, 0));
-        } catch (PackageManager.NameNotFoundException ne) {
-            ne.printStackTrace();
-            return "";
-        }
+        return getAppNameFromPkgName(pkgName);
     }
 
     void launch(String nm) {
@@ -214,8 +211,9 @@ public class MainActivity extends Activity {
     void updateAppList () {
         searchString = "";
         /* fetch all the installed apps */
+
         packageList = packageManager.queryIntentActivities(
-                new Intent(Intent.ACTION_MAIN, null).addCategory(Intent.CATEGORY_LAUNCHER), 0);
+                new Intent(Intent.ACTION_MAIN, null).addCategory(Intent.CATEGORY_LAUNCHER), PackageManager.MATCH_ALL);
     }
 
     void clearList () {
@@ -259,7 +257,7 @@ public class MainActivity extends Activity {
         string */
         for (ResolveInfo resolver : packageList) {
             String appName = (String) resolver.loadLabel(packageManager);
-            if (appName.toLowerCase().contains(searchString)) {
+            if (appName.toLowerCase(Locale.getDefault()).contains(searchString)) {
                 appAdapter.add(appName);
                 packageNamesArrList.add(resolver.activityInfo.packageName);
             }

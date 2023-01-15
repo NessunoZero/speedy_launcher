@@ -2,15 +2,29 @@ plugins {
     id 'com.android.application'
 }
 
+
+
 android {
     namespace "org.n0.speedy_launch"
     compileSdk 33
+
+    dependencies {
+        def preference_version = "1.2.0"
+
+        // Java language implementation
+        implementation "androidx.preference:preference:$preference_version"
+    }
+
     defaultConfig {
         applicationId "org.n0.speedy_launch"
         minSdk 22
         targetSdk 33
         versionCode 10
         versionName "1.0"
+    }
+
+    tasks.withType(JavaCompile) {
+        options.deprecation = true
     }
 
     buildTypes {
