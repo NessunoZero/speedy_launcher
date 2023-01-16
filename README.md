@@ -1,4 +1,4 @@
-# Here we are
+# Speedy Launcher
 This is a fork of: 
 
 [f-droid app](https://f-droid.org/en/packages/org.biotstoiq.launch/) 
