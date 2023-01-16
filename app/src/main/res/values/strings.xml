@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Speedy Launcher</string>
-    <string name="apNtFnd">No Apps Found. Press back button.</string>
     <string name="go">GO</string>
+    <string name="reset">Reset preferences?</string>
+    <string name="cancel">Cancel</string>
 
     <string name="left1">res</string>
     <string name="left2">1</string>

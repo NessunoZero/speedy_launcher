@@ -1,30 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
     <queries>
         <intent>
-            <action android:name="android.intent.action.MAIN" />
+            <action
+                android:name="android.intent.action.MAIN"/>
         </intent>
     </queries>
 
     <application
-        android:excludeFromRecents="true"
         android:clearTaskOnLaunch="true"
-        android:stateNotNeeded="true"
+        android:excludeFromRecents="true"
         android:icon="@mipmap/ico"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ico_round"
+        android:stateNotNeeded="true"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.Material.Wallpaper.NoTitleBar">
 
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:windowSoftInputMode="adjustResize"
-            android:exported="true">
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.HOME"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </activity>
     </application>

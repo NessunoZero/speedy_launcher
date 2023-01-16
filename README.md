@@ -5,10 +5,10 @@ This is a fork of:
 
 [gitlab repo](https://gitlab.com/biotstoiq/launch)
 
-# Style rivisited and updated
+# Style revisited and updated
 
 Change to package name and app name happen only to avoid confusion
 
 # Release
 
-Actually I have no release but just debug build...
+Actually I have no published yet on any store, just in this repo inside [app-release.apk](/app/release/app-release.apk)...
