@@ -10,7 +10,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.preference.PreferenceManager;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -201,7 +201,12 @@ public class MainActivity extends Activity {
     }
 
     String getAppNameFromPkgName (String pkgName) {
-        return getAppNameFromPkgName(pkgName);
+        try {
+            return (String) packageManager.getApplicationLabel(packageManager.getApplicationInfo(pkgName, 0));
+        } catch (PackageManager.NameNotFoundException ne) {
+            ne.printStackTrace();
+            return "";
+        }
     }
 
     void launch(String nm) {

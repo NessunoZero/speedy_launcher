@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "org.biotstoiq.launch",
+  "applicationId": "org.n0.speedy_launch",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 9,
-      "versionName": "0.908",
+      "versionCode": 10,
+      "versionName": "1.0",
       "outputFile": "app-release.apk"
     }
   ],

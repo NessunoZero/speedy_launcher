@@ -8,3 +8,7 @@ This is a fork of:
 # Style rivisited and updated
 
 Change to package name and app name happen only to avoid confusion
+
+# Release
+
+Actually I have no release but just debug build...
