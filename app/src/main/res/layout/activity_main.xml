@@ -16,33 +16,34 @@
 
         <ListView
             android:id="@+id/leftPrefs"
+            style="@android:style/DeviceDefault.ButtonBar"
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:divider="@null"
             android:scrollbars="none"
-            android:stackFromBottom="true"
-            style="@android:style/DeviceDefault.ButtonBar"/>
+            android:stackFromBottom="true" />
 
         <ListView
             android:id="@+id/appListView"
+            style="@android:style/DeviceDefault.ButtonBar"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:stackFromBottom="true"
             android:divider="@null"
             android:focusable="true"
             android:scrollbars="none"
-            android:stackFromBottom="true"
-            style="@android:style/DeviceDefault.ButtonBar"/>
+            android:paddingTop="@android:dimen/notification_large_icon_height"
+            />
 
         <ListView
             android:id="@+id/rightPrefs"
+            style="@android:style/DeviceDefault.ButtonBar"
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:divider="@null"
             android:scrollbars="none"
-            android:stackFromBottom="true"
-            style="@android:style/DeviceDefault.ButtonBar"
-            />
+            android:stackFromBottom="true" />
     </LinearLayout>
 
     <View
@@ -52,60 +53,57 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="52dp"
         android:orientation="horizontal">
-
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@android:dimen/app_icon_size"
+            android:layout_weight="1" />
         <Button
             android:id="@+id/leftBtn1"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:text="@string/left1"
-            style="@android:style/DeviceDefault.ButtonBar"/>
+            style="@android:style/DeviceDefault.ButtonBar"
+            android:layout_width="@android:dimen/app_icon_size"
+            android:layout_height="@android:dimen/app_icon_size"
+            android:text="@string/left1" />
 
         <Button
             android:id="@+id/leftBtn2"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:text="@string/left2"
-            style="@android:style/DeviceDefault.ButtonBar"/>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:background="@android:color/transparent" />
+            style="@android:style/DeviceDefault.ButtonBar"
+            android:layout_width="@android:dimen/app_icon_size"
+            android:layout_height="@android:dimen/app_icon_size"
+            android:text="@string/left2" />
 
         <EditText
             android:id="@+id/searchKeyEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_width="@android:dimen/notification_large_icon_width"
+            android:layout_height="48dip"
             android:autofillHints="name"
             android:cursorVisible="false"
             android:gravity="center"
+            android:layout_gravity="top"
             android:hint="@string/key"
             android:inputType="text"
-            android:paddingStart="8sp"
-            android:paddingEnd="8sp" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="@android:color/transparent" />
+            android:background="@null"
+            style="@android:style/DeviceDefault.ButtonBar"
+            />
 
         <Button
             android:id="@+id/rightBtn1"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:text="@string/right1"
-            style="@android:style/DeviceDefault.ButtonBar"/>
+            style="@android:style/DeviceDefault.ButtonBar"
+            android:layout_width="@android:dimen/app_icon_size"
+            android:layout_height="@android:dimen/app_icon_size"
+            android:text="@string/right1" />
 
         <Button
             android:id="@+id/rightBtn2"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:text="@string/right2"
-            style="@android:style/DeviceDefault.ButtonBar"/>
+            style="@android:style/DeviceDefault.ButtonBar"
+            android:layout_width="@android:dimen/app_icon_size"
+            android:layout_height="@android:dimen/app_icon_size"
+            android:text="@string/right2" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@android:dimen/app_icon_size"
+            android:layout_weight="1" />
     </LinearLayout>
 </LinearLayout>

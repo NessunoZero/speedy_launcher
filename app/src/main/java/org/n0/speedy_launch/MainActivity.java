@@ -14,13 +14,16 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -50,7 +53,9 @@ public class MainActivity extends Activity {
     /* the global search string */
     private String searchString;
 
-    final private String[] leftPrefsArr = new String[]{"∀", "∃", "∈", "∉", "⊂", "⊗", "∫"};
+    private boolean tempShowApp = false;
+
+    final private String[] leftPrefsArr = new String[]{"∫", "∃", "∈", "∉", "⊂", "⊗", "∀"};
     final private String[] rightPrefsArr = new String[]{"∞", "∧", "∨", "⊂", "∑", "∏", "⊕"};
 
 
@@ -93,7 +98,6 @@ public class MainActivity extends Activity {
         /* get all the package names into the list */
         updateAppList();
 
-
         /* launch the app */
         appListView.setOnItemClickListener((adapterView, view, i, l) -> launch(packageNamesArrList.get(i)));
 
@@ -117,19 +121,14 @@ public class MainActivity extends Activity {
 
 
         leftBtn1.setOnLongClickListener((view) -> {
-            alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle(R.string.reset);
-            alertDialogBuilder.setPositiveButton(R.string.go, (dialogInterface, i1) -> prefs.edit().clear().apply());
-            alertDialogBuilder.setNegativeButton(R.string.cancel, (dialogInterface, i1) -> {
-
-            });
-            alertDialogBuilder.create().show();
+            prefEditor.putBoolean("skeptic", !prefs.getBoolean("skeptic", false)).apply();
             return true;
         });
 
-        leftBtn1.setOnClickListener((view) ->
-
-                buttonPrefsFlow("left_1"));
+        leftBtn1.setOnClickListener((view) -> {
+            prefEditor.putBoolean("show_menu", !prefs.getBoolean("show_menu", false)).apply();
+            filterAppList();
+        });
 
         leftBtn2.setOnClickListener((view) ->
 
@@ -219,7 +218,7 @@ public class MainActivity extends Activity {
     }
 
     void showHelp() {
-        alertDialogBuilder.setMessage(R.string.hlp);
+        alertDialogBuilder.setMessage(R.string.help);
         alertDialogBuilder.setPositiveButton(R.string.go, (dialogInterface, i) -> {
         });
         alertDialogBuilder.create().show();
@@ -231,9 +230,7 @@ public class MainActivity extends Activity {
     }
 
     void buttonPrefsFlow(String key) {
-        if (searchString.length() == 0) {
-            fetchAllApps();
-        }
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         String pkgName = prefs.getString(key, "");
         if (!pkgName.equals("")) {
             String appName;
@@ -241,25 +238,44 @@ public class MainActivity extends Activity {
             if (appName.equals("")) {
                 changeOnPressAppDialog(key);
             } else {
-                launch(pkgName);
-                filterAppList();
+                if (prefs.getBoolean("skeptic", false)) {
+                    launchOrChangePref(key, appName, pkgName);
+                } else {
+                    launch(pkgName);
+                }
             }
         } else {
             changeOnPressAppDialog(key);
         }
     }
 
+    void launchOrChangePref(String key, String appName, String packageName) {
+        alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(appName);
+        alertDialogBuilder.setPositiveButton(R.string.go, (dialogInterface, i1) -> launch(packageName));
+        alertDialogBuilder.setNegativeButton(R.string.change, (dialogInterface, i1) -> changeOnPressAppDialog(key));
+        alertDialogBuilder.create().show();
+    }
+
+
     void changeOnPressAppDialog(String key) {
+        tempShowApp = true;
         alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setView(R.layout.main_listview);
         alertDialogBuilder.setAdapter(appListView.getAdapter(), (dialogInterface, i1) -> {
             prefEditor.putString(key, packageNamesArrList.get(i1));
             prefEditor.apply();
+            tempShowApp = false;
             filterAppList();
         });
-        alertDialogBuilder.setOnCancelListener((dialogInterface) -> filterAppList());
+        alertDialogBuilder.setOnCancelListener((dialogInterface) -> {
+            tempShowApp = false;
+            filterAppList();
+        });
+        filterAppList();
         alertDialogBuilder.create().show();
     }
+
 
     String getAppNameFromPkgName(String pkgName) {
         try {
@@ -270,8 +286,23 @@ public class MainActivity extends Activity {
         }
     }
 
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        /* if back key pressed for long, then clear search string */
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            searchString = "";
+            searchKeyEdit.getText().clear();
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        }
+        return true;
+    }
+
+
     void launch(String nm) {
-        startActivity(packageManager.getLaunchIntentForPackage(nm));
+        if(nm.equals("org.n0.speedy_launch")){
+            showHelp();
+        }else{
+            startActivity(packageManager.getLaunchIntentForPackage(nm));
+        }
     }
 
     void updateAppList() {
@@ -279,6 +310,7 @@ public class MainActivity extends Activity {
         /* fetch all the installed apps */
 
         packageList = packageManager.queryIntentActivities(new Intent(Intent.ACTION_MAIN, null).addCategory(Intent.CATEGORY_LAUNCHER), PackageManager.MATCH_ALL);
+        Collections.sort(packageList, new ResolveInfo.DisplayNameComparator(packageManager));
     }
 
     void clearList() {
@@ -307,9 +339,8 @@ public class MainActivity extends Activity {
     }
 
     void filterAppList() {
-
         clearList();
-        if (searchString.length() == 0) {
+        if (!tempShowApp && searchString.length() == 0 && !prefs.getBoolean("show_menu", false)) {
             return;
         }
         /* check each package name and add only the ones that match the search
@@ -321,6 +352,7 @@ public class MainActivity extends Activity {
                 packageNamesArrList.add(resolver.activityInfo.packageName);
             }
         }
+        appListView.setSelection(0);
     }
 
     /* show the app name adapter as the app list */

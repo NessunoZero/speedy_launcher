@@ -1,14 +1,13 @@
 <resources>
     <string name="app_name">Speedy Launcher</string>
     <string name="go">GO</string>
-    <string name="reset">Reset preferences?</string>
-    <string name="cancel">Cancel</string>
+    <string name="change">Update</string>
 
-    <string name="left1">res</string>
+    <string name="left1">▦</string>
     <string name="left2">1</string>
-    <string name="key">KEY</string>
+    <string name="key">Search</string>
     <string name="right1">2</string>
     <string name="right2">3</string>
 
-    <string name="hlp"><b>Long press</b> on an <b>app</b> to open its system settings.\n\n<b>Long press</b> or <b>short press</b> on <b>a button</b> to assign or open shortcuts.\n\nUse the <b>KEYD</b> field to search using the keyboard.\nclick on res to assign a shortcut long press to reset shortcut</string>
+    <string name="help"><b>Tap on an <b>app</b> to launch it\nLong press</b> on an <b>app</b> to open its system settings.\n\nTap <b>▦</b> to show/hide app also without search text.\n\nLong press <b>▦</b> to show/hide confirm dialog using shortcut.\n\nEvery other symbol is a shortcut that launch the app you want with single tap o long press.</string>
 </resources>
