@@ -9,6 +9,6 @@
     <string name="right1">2</string>
     <string name="right2">3</string>
 
-    <string name="help"><b>Tap on an <b>app</b> to launch it\n\nLong press</b> on an <b>app</b> to open its system settings.\n\nTap <b>▦</b> to show/hide app also without search text.\n\nLong press <b>▦</b> to show/hide confirm dialog using shortcut.\n\nEvery other symbol is a shortcut that launch the app you want with single tap o long press.\n\nLaunch "Speedy Launcher" from itself to reload app list and view again this help text</string>
+    <string name="help">Tap on an <b>app</b> to launch it\n\nLong press on an <b>app</b> to open its system settings.\n\nTap <b>▦</b> to show/hide app also without search text.\n\nLong press <b>▦</b> to show/hide confirm dialog using shortcut.\n\nEvery other symbol is a shortcut that launch the app you want with single tap o long press.\n\nLaunch "Speedy Launcher" from itself to reload app list and view again this help text</string>
     <string name="appDeleted">App no longer installed, automatically updated app list.</string>
 </resources>

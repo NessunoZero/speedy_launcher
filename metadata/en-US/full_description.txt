@@ -1,0 +1,17 @@
+Don't know if <b>Speedy Launcher</b> is a just balance between performance and usability.
+
+No doubt it is really minimal no icons, no auto update applications list, nothing that could waste your battery.
+
+Let me show it's help text:
+
+Tap on an <b>app</b> to launch it
+
+Long press on an <b>app</b> to open its system settings.
+
+Tap <b>▦</b> to show/hide app also without search text.
+
+Long press <b>▦</b> to show/hide confirm dialog using shortcut.
+
+Every other symbol is a shortcut that launch the app you want with single tap o long press.
+
+Launch "Speedy Launcher" from itself to reload app list and view again this help text.

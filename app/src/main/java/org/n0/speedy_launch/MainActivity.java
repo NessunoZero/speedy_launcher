@@ -20,7 +20,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -104,7 +103,7 @@ public class MainActivity extends Activity {
             try {
                 Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 intent.setData(Uri.parse("package:" + packageNamesArrList.get(i)));
-                if(getAppNameFromPkgName(packageNamesArrList.get(i)).equals("")){
+                if (getAppNameFromPkgName(packageNamesArrList.get(i)).equals("")) {
                     throw new Exception("package deleted");
                 }
                 startActivity(intent);
@@ -248,10 +247,8 @@ public class MainActivity extends Activity {
             String appName;
             appName = getAppNameFromPkgName(pkgName);
             if (appName.equals("")) {
-                if (!pkgName.equals("")) {
-                    prefEditor.putString(key, "").apply();
-                    showAppDeleted();
-                }
+                prefEditor.putString(key, "").apply();
+                showAppDeleted();
                 changeOnPressAppDialog(key);
             } else {
                 if (prefs.getBoolean("skeptic", false)) {
@@ -324,10 +321,8 @@ public class MainActivity extends Activity {
     void updateAppList() {
         /* fetch all the installed apps */
         List<ResolveInfo> resolveInfoPackageList = packageManager.queryIntentActivities(new Intent(Intent.ACTION_MAIN, null).addCategory(Intent.CATEGORY_LAUNCHER), PackageManager.MATCH_ALL);
-        Collections.sort(resolveInfoPackageList, new ResolveInfo.DisplayNameComparator(packageManager));
-        packageList = resolveInfoPackageList.stream().map(resolveInfo -> {
-            return new String[]{resolveInfo.activityInfo.packageName, (String) resolveInfo.loadLabel(packageManager)};
-        }).collect(Collectors.toList());
+        resolveInfoPackageList.sort(new ResolveInfo.DisplayNameComparator(packageManager));
+        packageList = resolveInfoPackageList.stream().map(resolveInfo -> new String[]{resolveInfo.activityInfo.packageName, (String) resolveInfo.loadLabel(packageManager)}).collect(Collectors.toList());
     }
 
     void clearList() {
