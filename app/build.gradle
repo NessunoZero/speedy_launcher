@@ -14,10 +14,10 @@ android {
 
     defaultConfig {
         applicationId "org.n0.speedy_launch"
-        minSdk 23
+        minSdk 24
         targetSdk 33
         versionCode 10
-        versionName "1.1"
+        versionName "1.2"
         testFunctionalTest false
     }
 

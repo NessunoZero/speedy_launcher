@@ -2,7 +2,6 @@ package org.n0.speedy_launch;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,18 +13,17 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class MainActivity extends Activity {
 
@@ -46,7 +44,7 @@ public class MainActivity extends Activity {
 
     private ArrayList<String> packageNamesArrList;
     private ArrayAdapter<String> appAdapter;
-    private List<ResolveInfo> packageList;
+    private List<String[]> packageList;
     private PackageManager packageManager;
 
 
@@ -106,9 +104,12 @@ public class MainActivity extends Activity {
             try {
                 Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 intent.setData(Uri.parse("package:" + packageNamesArrList.get(i)));
+                if(getAppNameFromPkgName(packageNamesArrList.get(i)).equals("")){
+                    throw new Exception("package deleted");
+                }
                 startActivity(intent);
-            } catch (ActivityNotFoundException e) {
-                fetchAllApps();
+            } catch (Exception e) {
+                showAppDeleted();
             }
             return true;
         });
@@ -218,7 +219,18 @@ public class MainActivity extends Activity {
     }
 
     void showHelp() {
+        updateAppList();
+        filterAppList();
         alertDialogBuilder.setMessage(R.string.help);
+        alertDialogBuilder.setPositiveButton(R.string.go, (dialogInterface, i) -> {
+        });
+        alertDialogBuilder.create().show();
+    }
+
+    void showAppDeleted() {
+        updateAppList();
+        filterAppList();
+        alertDialogBuilder.setMessage(R.string.appDeleted);
         alertDialogBuilder.setPositiveButton(R.string.go, (dialogInterface, i) -> {
         });
         alertDialogBuilder.create().show();
@@ -236,6 +248,10 @@ public class MainActivity extends Activity {
             String appName;
             appName = getAppNameFromPkgName(pkgName);
             if (appName.equals("")) {
+                if (!pkgName.equals("")) {
+                    prefEditor.putString(key, "").apply();
+                    showAppDeleted();
+                }
                 changeOnPressAppDialog(key);
             } else {
                 if (prefs.getBoolean("skeptic", false)) {
@@ -286,31 +302,32 @@ public class MainActivity extends Activity {
         }
     }
 
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        /* if back key pressed for long, then clear search string */
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            searchString = "";
-            searchKeyEdit.getText().clear();
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        }
-        return true;
+    public void onBackPressed() {
+        searchString = "";
+        searchKeyEdit.getText().clear();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
 
     void launch(String nm) {
-        if(nm.equals("org.n0.speedy_launch")){
+        if (nm.equals("org.n0.speedy_launch")) {
             showHelp();
-        }else{
-            startActivity(packageManager.getLaunchIntentForPackage(nm));
+        } else {
+            try {
+                startActivity(packageManager.getLaunchIntentForPackage(nm));
+            } catch (Exception e) {
+                showAppDeleted();
+            }
         }
     }
 
     void updateAppList() {
-        searchString = "";
         /* fetch all the installed apps */
-
-        packageList = packageManager.queryIntentActivities(new Intent(Intent.ACTION_MAIN, null).addCategory(Intent.CATEGORY_LAUNCHER), PackageManager.MATCH_ALL);
-        Collections.sort(packageList, new ResolveInfo.DisplayNameComparator(packageManager));
+        List<ResolveInfo> resolveInfoPackageList = packageManager.queryIntentActivities(new Intent(Intent.ACTION_MAIN, null).addCategory(Intent.CATEGORY_LAUNCHER), PackageManager.MATCH_ALL);
+        Collections.sort(resolveInfoPackageList, new ResolveInfo.DisplayNameComparator(packageManager));
+        packageList = resolveInfoPackageList.stream().map(resolveInfo -> {
+            return new String[]{resolveInfo.activityInfo.packageName, (String) resolveInfo.loadLabel(packageManager)};
+        }).collect(Collectors.toList());
     }
 
     void clearList() {
@@ -328,11 +345,15 @@ public class MainActivity extends Activity {
         /* clear the list before repopulating */
         clearList();
 
+        if (!tempShowApp && searchString.length() == 0 && !prefs.getBoolean("show_menu", false)) {
+            showApps();
+            return;
+        }
+
         /* add the apps names to the adapter, and the package name to the array list */
-        for (ResolveInfo resolver : packageList) {
-            String appName = (String) resolver.loadLabel(packageManager);
-            appAdapter.add(appName);
-            packageNamesArrList.add(resolver.activityInfo.packageName);
+        for (String[] resolver : packageList) {
+            appAdapter.add(resolver[1]);
+            packageNamesArrList.add(resolver[0]);
         }
 
         showApps();
@@ -345,11 +366,10 @@ public class MainActivity extends Activity {
         }
         /* check each package name and add only the ones that match the search
         string */
-        for (ResolveInfo resolver : packageList) {
-            String appName = (String) resolver.loadLabel(packageManager);
-            if (appName.toLowerCase(Locale.getDefault()).contains(searchString)) {
-                appAdapter.add(appName);
-                packageNamesArrList.add(resolver.activityInfo.packageName);
+        for (String[] resolver : packageList) {
+            if (resolver[1].toLowerCase(Locale.getDefault()).contains(searchString)) {
+                appAdapter.add(resolver[1]);
+                packageNamesArrList.add(resolver[0]);
             }
         }
         appListView.setSelection(0);
@@ -365,8 +385,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        updateAppList();
         fetchAllApps();
-        filterAppList();
     }
 }
