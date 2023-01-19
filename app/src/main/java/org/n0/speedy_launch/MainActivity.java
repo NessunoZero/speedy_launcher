@@ -91,7 +91,7 @@ public class MainActivity extends Activity {
         leftPrefsListView.setAdapter(leftPrefsAdapter);
         rightPrefsListView.setAdapter(rightPrefsAdapter);
 
-
+        searchString = "";
         /* get all the package names into the list */
         updateAppList();
 
