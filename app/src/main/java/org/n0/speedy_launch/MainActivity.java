@@ -14,11 +14,12 @@ import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
+import android.content.Context;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -241,7 +242,6 @@ public class MainActivity extends Activity {
     }
 
     void buttonPrefsFlow(String key) {
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         String pkgName = prefs.getString(key, "");
         if (!pkgName.equals("")) {
             String appName;
@@ -302,11 +302,11 @@ public class MainActivity extends Activity {
     public void onBackPressed() {
         searchString = "";
         searchKeyEdit.getText().clear();
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
 
     void launch(String nm) {
+        ((InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(appListView.getWindowToken(), 0);
         if (nm.equals("org.n0.speedy_launch")) {
             showHelp();
         } else {
