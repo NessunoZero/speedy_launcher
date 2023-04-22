@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
     private boolean tempShowApp = false;
 
     final private String[] leftPrefsArr = new String[]{"∫", "∃", "∈", "∉", "⊂", "⊗", "∀"};
-    final private String[] rightPrefsArr = new String[]{"∞", "∧", "∨", "⊂", "∑", "∏", "⊕"};
+    final private String[] rightPrefsArr = new String[]{"∞", "∧", "∨", "⊃", "∑", "∏", "⊕"};
 
 
     @Override
